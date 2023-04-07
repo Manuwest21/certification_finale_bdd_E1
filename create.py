@@ -1,6 +1,6 @@
 import sqlite3
 
-connexion=sqlite3.connect("bdd2.db")
+connexion=sqlite3.connect("bdd1.db")
 curseur=connexion.cursor()
 
 curseur.execute("""
@@ -25,6 +25,15 @@ curseur.execute(""" CREATE TABLE IF NOT EXISTS gare(
                     frequent_2019 INTEGER,
                     frequent_2020 INTEGER,
                     frequent_2021 INTEGER
+                )
+                """)
+
+connexion.commit()
+
+curseur.execute(""" CREATE TABLE IF NOT EXISTS meteo(
+                    date TEXT NOT NULL PRIMARY KEY,
+                    temperature INTEGER
+                   
                 )
                 """)
 

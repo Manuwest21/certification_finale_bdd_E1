@@ -25,7 +25,7 @@ for i in gare:
      
     
     # })
-    connexion = sqlite3.connect("bdd2.db")
+    connexion = sqlite3.connect("bdd1.db")
     curseur = connexion.cursor()
     curseur.execute("""
         INSERT INTO gare (nom_gare, frequent_2019, frequent_2020, frequent_2021)

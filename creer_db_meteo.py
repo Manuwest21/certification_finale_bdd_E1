@@ -5,10 +5,10 @@ import sqlite3
 df = pd.read_csv('temp_paris.csv')
 
 # Connexion à la base de données SQLite
-conn = sqlite3.connect('ma_base_de_donnees.db')
+conn = sqlite3.connect('bdd1.db')
 
 # Écriture du DataFrame dans une table SQL
-df.to_sql('jour_temp', conn, if_exists='replace', index=False)
+df.to_sql('meteo', conn, if_exists='replace', index=False)
 
 # Fermeture de la connexion
 conn.close()
