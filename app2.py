@@ -20,39 +20,41 @@ for i in tp.index:
 list.append('total')                  #integration de liste deroulante de tous les types d'objets perdus
 
 
-hobby = st.selectbox("Hobbies: ",    # je donne le choix du type objet perdu
+hobby = st.multiselect("Hobbies: ",    # je donne le choix du type objet perdu
                      list)
-if hobby=='total':
-    
-# for index, row in tp.iterrows():
-#     if index==hobby:
-#         z=row['type']
 
-# dff = daf.loc[daf['type'] == hobby]    
-# for index, value in tp.items():
-#     if index==hobby:
-#         z=value
+if(st.button("voir le graphique")):
+    if 'total' in hobby:
         
-    fig = px.histogram( daf.loc[daf['type'] == hobby], x='date' , title='Histogramme des objets perdus par semaine')
-    fig.update_xaxes(
-        tickformat="%b %Y",
-        dtick="W1",
-        ticklabelmode="period"
-    )
+    # for index, row in tp.iterrows():
+    #     if index==hobby:
+    #         z=row['type']
 
-# Afficher le graphique
-    fig.show()
-else:
-# selection= tp.loc[tp['sports'] == hobby, 'type'].values[0]
-    fig = px.histogram( daf.loc[daf['type'] == hobby], x='date' ,nbins=200, title='Histogramme des objets perdus par semaine')
-    fig.update_xaxes(
-        tickformat="%b %Y",
-        dtick="W1",
-        ticklabelmode="period"
-    )
+    # dff = daf.loc[daf['type'] == hobby]    
+    # for index, value in tp.items():
+    #     if index==hobby:
+    #         z=value
+            
+        fig = px.histogram( daf, x='date' , title='Histogramme des objets perdus par semaine')
+        fig.update_xaxes(
+            tickformat="%b %Y",
+            dtick="W1",
+            ticklabelmode="period"
+        )
 
     # Afficher le graphique
-    fig.show()
+        fig.show()
+    else:
+    # selection= tp.loc[tp['sports'] == hobby, 'type'].values[0]
+        fig = px.histogram( daf.loc[daf['type'] == hobby], x='date' ,nbins=200, title='Histogramme des objets perdus par semaine')
+        fig.update_xaxes(
+            tickformat="%b %Y",
+            dtick="W1",
+            ticklabelmode="period"
+        )
+
+        # Afficher le graphique
+        fig.show()
 
 #je veux créer un df qui reprendra daf[date] et qui associera 
 

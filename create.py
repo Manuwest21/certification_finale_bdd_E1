@@ -60,14 +60,18 @@ connexion.commit()
 # #     num_objects_found INTEGER
 # # );
 # def assoc_user_playlist(id_playlist:int, id_utilisateur:int)->None:
-#     connexion=sqlite3.connect('bdd1.db')
-#     curseur= connexion.cursor()
-    
-#     curseur.execute("""
-#                     INSERT INTO asso_playlist_user
-#                         VALUES(?,?)
-#                         """, (id_utilisateur, id_playlist))
-    
-#     connexion.commit()
-#     connexion.close()
-    
+
+connexion=sqlite3.connect('bddt.db')
+curseur= connexion.cursor()
+
+curseur.execute("""
+                 UPDATE objets_trouves
+                SET date_meteo = meteo.date
+                FROM meteo
+                WHERE objets_trouves.data = meteo.date
+                 
+                        """)
+connexion.commit()
+connexion.close()
+  curseur.execute("""
+                   
