@@ -2,7 +2,7 @@ import requests
 import pandas as pd
 import sqlite3
 gares_parisiennes = ["Paris Gare de Lyon", "Paris Gare du Nord", "Paris Est" , "Paris Saint-Lazare" , "Paris Austerlitz" , 'Paris Bercy']
-annees = ["2019"]
+annees = ["2022"]
 
 # Création d'un DataFrame vide
 df = pd.DataFrame()
@@ -30,7 +30,7 @@ for gare in gares_parisiennes:
             dati = i['fields']['date']
             typo = i['fields']['gc_obo_type_c']
             gara = i['fields']['gc_obo_gare_origine_r_name']
-            connexion = sqlite3.connect("bdd2.db")
+            connexion = sqlite3.connect("bddd.db")
             curseur = connexion.cursor()
             curseur.execute("""
                 INSERT INTO objets_trouves (data,typo,nom_gare)
