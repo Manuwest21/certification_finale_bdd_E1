@@ -10,7 +10,8 @@ curseur=connexion.cursor()
 #         WHERE objets_trouves.nom_gare = gare.gare
 #         """)
 # #    SET date_meteo=meteo.date
-curseur.execute(""" CREATE TABLE IF NOT EXISTS gare(
+curseur.execute("DROP TABLE IF EXISTS gare")
+curseur.execute(""" CREATE TABLE  gare(
                     nom_gare TEXT NOT NULL PRIMARY KEY,
                     frequent_2019 INTEGER,
                     frequent_2020 INTEGER,
