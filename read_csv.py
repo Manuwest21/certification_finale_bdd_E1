@@ -1,4 +1,6 @@
 import pandas as pd
+import requests
+import pandas as pd
 
 df= pd.read_csv("concat.csv")
 print(df.shape)
@@ -10,8 +12,7 @@ print(dof)
 dof.to_csv("frequentation.csv")
 
 
-import requests
-import pandas as pd
+
 
 gares_parisiennes = ["Paris Gare de Lyon", "Paris Montparnasse", "Paris Gare du Nord", "Paris Est" , "Paris Saint-Lazare" , "Paris Austerlitz" , 'Paris Bercy']
 annees = ["2019", "2020" , "2021" , "2022"]

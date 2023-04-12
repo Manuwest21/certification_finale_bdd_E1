@@ -1,8 +1,10 @@
+import streamlit as st
 import pandas as pd
 import plotly.express as px
-import streamlit as st
 
-df= pd.read_csv("concat.csv")
+
+df= pd.read_csv("csv/concat.csv")
+
 daf=df[['fields.gc_obo_type_c', 'fields.gc_obo_gare_origine_r_name','fields.date']]
 daf.rename(columns={"fields.date":"date"},inplace=True)
 daf.rename(columns={"fields.gc_obo_type_c":"type"},inplace=True)
