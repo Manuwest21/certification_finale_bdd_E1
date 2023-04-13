@@ -2,14 +2,7 @@ import sqlite3
 
 connexion=sqlite3.connect("bddt.db")
 curseur=connexion.cursor()
-# curseur.execute("""
-#         UPDATE objets_trouves
-#         SET nom_gare = gare.gare
-        
-#         FROM gare
-#         WHERE objets_trouves.nom_gare = gare.gare
-#         """)
-# #    SET date_meteo=meteo.date
+
 curseur.execute("DROP TABLE IF EXISTS gare")
 curseur.execute(""" CREATE TABLE  gare(
                     nom_gare TEXT NOT NULL PRIMARY KEY,
@@ -54,25 +47,4 @@ curseur.execute("""
                 """)
 
 connexion.commit()
-
-# connexion.commit()
-# # CREATE TABLE objets_trouves_par_semaine (
-# #     week TEXT,
-# #     num_objects_found INTEGER
-# # );
-# def assoc_user_playlist(id_playlist:int, id_utilisateur:int)->None:
-
-connexion=sqlite3.connect('bddt.db')
-curseur= connexion.cursor()
-
-curseur.execute("""
-                 UPDATE objets_trouves
-                SET date_meteo = meteo.date
-                FROM meteo
-                WHERE objets_trouves.data = meteo.date
-                 
-                        """)
-connexion.commit()
 connexion.close()
-  curseur.execute("""
-                   
