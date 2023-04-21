@@ -1,33 +1,50 @@
-import pandas as pd
 import sqlite3
 
+connexion=sqlite3.connect("bddt.db")
+curseur=connexion.cursor()
 
-df= pd.read_csv("concat.csv")
-daf=df[['fields.gc_obo_type_c', 'fields.gc_obo_gare_origine_r_name','fields.date']]
-daf.rename(columns={"fields.date":"data"},inplace=True)
-daf.rename(columns={"fields.gc_obo_type_c":"typo"},inplace=True)
-daf.rename(columns={"fields.gc_obo_gare_origine_r_name":"gare"},inplace=True)
-daf['date'] = daf['date'].str.slice(stop=10)
+curseur.execute("DROP TABLE IF EXISTS gare")
+curseur.execute(""" CREATE TABLE  gare(
+                    nom_gare TEXT NOT NULL PRIMARY KEY,
+                    frequent_2019 INTEGER,
+                    frequent_2020 INTEGER,
+                    frequent_2021 INTEGER,
+                    frequent_2022 INTEGER
+                )
+                """)
 
-daf = daf[['data', 'typo', 'gare']]
-daf['data']=daf['data'].apply(lambda x : x[:10])
+connexion.commit()
 
-df = pd.read_csv('temp_paris.csv')
-dif = pd.read_csv('frequentation.csv')
+curseur.execute(""" CREATE TABLE IF NOT EXISTS meteo(
+                    date TEXT NOT NULL PRIMARY KEY,
+                    temperature INTEGER
+                   
+                )
+                """)
 
-conn = sqlite3.connect('bdd.db')
-curseur = conn.cursor()
+connexion.commit()
 
-for index, row in df.iterrows():
-    curseur.execute("INSERT INTO meteo (date, temperature) VALUES (?, ?)", (row['date'], row['temperature_moyenne_°C']))
-conn.commit()   
-for index, row in dif.iterrows():
-    curseur.execute("INSERT INTO gare (nom_gare, frequent_2019,frequent_2020,frequent_2021,frequent_2022) VALUES (?, ?,?,?,?)", (row['gare'], row['frequent_2019'],row['frequent_2020'],row['frequent_2021'],row['frequent_2022']))
-conn.commit()    
+curseur.execute(""" CREATE TABLE IF NOT EXISTS obj_semaine(
+                    week TEXT NOT NULL PRIMARY KEY,
+                    obj_trouves INTEGER
+                   
+                )
+                """)
 
-for index, row in daf.iterrows():
-    curseur.execute("INSERT INTO objets_trouves (data,typo,gare) VALUES (?, ?,?)", (row['data'], row['typo'],row['gare']))
-conn.commit()    
-conn.close()
+connexion.commit()
 
+curseur.execute("""
+                CREATE TABLE IF NOT EXISTS objets_trouves(
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    data TEXT NOT NULL,
+                    typo TEXT NOT NULL,
+                    gare TEXT NOT NULL,
+                    nom_gare TEXT NULL,
+                    date_meteo TEXT NULL,
+                    FOREIGN KEY (nom_gare) REFERENCES gare(nom_gare),
+                    FOREIGN KEY (date_meteo) REFERENCES meteo(date)
+                )
+                """)
 
+connexion.commit()
+connexion.close()

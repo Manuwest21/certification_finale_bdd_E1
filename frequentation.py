@@ -39,4 +39,4 @@ for i in gare:
         ("{}",'{}','{}','{}','{}')
     """.format(i,int(frequent_2019), int(frequent_2020), int(frequent_2021),int(frequent_2021)))
     connexion.commit()
-df.to_csv("frequent.csv")
+df.to_csv("frequentation.csv")
