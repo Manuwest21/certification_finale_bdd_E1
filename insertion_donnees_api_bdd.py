@@ -2,8 +2,9 @@ import requests
 import pandas as pd
 import sqlite3
 gares_parisiennes = ["Paris Gare de Lyon", "Paris Gare du Nord", "Paris Est" , "Paris Saint-Lazare" , "Paris Austerlitz" , 'Paris Bercy']
-annees = ["2019,2020,2021,2022"]
-
+annees = ["2021","2022","2023"]
+def replace_apostrophes(text):
+    return text.replace("'", " ")
 # Création d'un DataFrame vide
 df = pd.DataFrame()
 i = 0
@@ -15,15 +16,26 @@ for gare in gares_parisiennes:
         # print (response)
         # Récupération des enregistrements
         records= response.json()
-        
+        print(records)
+        nombre= 12
         for i in records['records']:
+            nombre+=1
+            print(nombre)
+          
+            print
             dati = i['fields']['date']
+            print("1")
             typo = i['fields']['gc_obo_type_c']
+            typo = replace_apostrophes(i['fields']['gc_obo_type_c'])
+
+            print("2")
             gara = i['fields']['gc_obo_gare_origine_r_name']
-            connexion = sqlite3.connect("bddd.db")
+            gara = replace_apostrophes(i['fields']['gc_obo_gare_origine_r_name'])
+            print("3")
+            connexion = sqlite3.connect("bdd_luz.db")
             curseur = connexion.cursor()
             curseur.execute("""
-                INSERT INTO objets_trouves (data,typo,nom_gare)
+                INSERT INTO objets_trouves (date,type,gare)
                 VALUES
                 ('{}','{}','{}')
             """.format(dati, typo, gara))

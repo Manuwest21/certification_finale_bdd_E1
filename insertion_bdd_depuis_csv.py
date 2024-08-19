@@ -28,6 +28,7 @@ conn.commit()
 for index, row in daf.iterrows():
     curseur.execute("INSERT INTO objets_trouves (data,typo,gare) VALUES (?, ?,?)", (row['data'], row['typo'],row['gare']))
 conn.commit()    
+
 conn.close()
 
 

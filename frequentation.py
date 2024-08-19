@@ -27,11 +27,11 @@ for i in gare:
 
     new_row = {"gare": i, "frequent_2019": frequent_2019, "frequent_2020": frequent_2020, "frequent_2021": frequent_2021, "frequent_2022": frequent_2022}
 
-    df = df.append(new_row, ignore_index=True)
+    df = df._append(new_row, ignore_index=True)
 
     
     # })
-    connexion = sqlite3.connect("bddp.db")
+    connexion = sqlite3.connect("bddc.db")
     curseur = connexion.cursor()
     curseur.execute("""
         INSERT INTO gare (nom_gare, frequent_2019, frequent_2020, frequent_2021, frequent_2022)
