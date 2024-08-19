@@ -2,7 +2,7 @@ import pandas as pd
 import sqlite3
 
 
-df= pd.read_csv("fichier_concat_good_actu.csv")
+df= pd.read_csv("fichier_concat_good_actu4.csv")
 
 n=1
 conn = sqlite3.connect('bdd_luz.db')

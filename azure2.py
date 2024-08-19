@@ -1,4 +1,4 @@
-import pyodbc
+import pypyodbc
 
 # Remplacez ces valeurs par vos informations de connexion
 server = 'rg-devries-serveur.database.windows.net'
@@ -12,7 +12,7 @@ connection_string = f'DRIVER={driver};SERVER={server};DATABASE={database};UID={u
 
 try:
     # Établir la connexion
-    conn = pyodbc.connect(connection_string)
+    conn = pypyodbc.connect(connection_string)
     cursor = conn.cursor()
 
     # Exécuter une requête SQL pour créer une table
