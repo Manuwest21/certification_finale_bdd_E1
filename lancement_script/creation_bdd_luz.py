@@ -1,6 +1,6 @@
 import sqlite3
 
-connexion=sqlite3.connect("bdd_luz.db")
+connexion=sqlite3.connect("bdd_objets_luminosite.db")
 curseur=connexion.cursor()
 
 curseur.execute("DROP TABLE IF EXISTS frequentation")
@@ -18,13 +18,23 @@ curseur.execute("DROP TABLE IF EXISTS lumiere")
 curseur.execute(""" CREATE TABLE IF NOT EXISTS lumiere(
                     date TEXT NOT NULL PRIMARY KEY,
                     cloud INTEGER,
-                    sun INTEGER
-                
-                   
+                    sun INTEGER  
                 )
                 """)
 
+curseur.execute("DROP TABLE IF EXISTS objets_trouves")
+curseur.execute("""
+                CREATE TABLE IF NOT EXISTS objets_trouves(
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    date TEXT NOT NULL ,
+                    type TEXT ,
+                    gare TEXT ,
+                    FOREIGN KEY (date) REFERENCES lumiere(date)  
+                )
+                """)
 
+connexion.commit()
+connexion.close()
 
 # curseur.execute(""" CREATE TABLE IF NOT EXISTS obj_semaine(
 #                     week TEXT NOT NULL PRIMARY KEY,
@@ -50,17 +60,4 @@ curseur.execute(""" CREATE TABLE IF NOT EXISTS lumiere(
 
 # connexion.commit()
 
-curseur.execute("DROP TABLE IF EXISTS objets_trouves")
-curseur.execute("""
-                CREATE TABLE IF NOT EXISTS objets_trouves(
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    date TEXT NOT NULL ,
-                    type TEXT ,
-                    gare TEXT ,
-                    FOREIGN KEY (date) REFERENCES lumiere(date)
-                    
-                )
-                """)
 
-connexion.commit()
-connexion.close()

@@ -1,20 +1,20 @@
 import sqlite3
 
-connexion=sqlite3.connect("bdd_luz.db")
+connexion=sqlite3.connect("bdd_luz_actu3.db")
 curseur=connexion.cursor()
 
-# curseur.execute("DROP TABLE IF EXISTS gare")
-# curseur.execute(""" CREATE TABLE  gare(
-#                     nom_gare TEXT NOT NULL PRIMARY KEY,
-#                     frequent_2019 INTEGER,
-#                     frequent_2020 INTEGER,
-#                     frequent_2021 INTEGER,
-#                     frequent_2022 INTEGER
-#                 )
-#                 """)
+curseur.execute("DROP TABLE IF EXISTS frequentation")
+curseur.execute(""" CREATE TABLE  frequentation(
+                    nom_gare TEXT NOT NULL PRIMARY KEY,
+                    frequent_2021 INTEGER,
+                    frequent_2022 INTEGER,
+                    frequent_2023 INTEGER
+                )
+                """)
 
-# connexion.commit()
+connexion.commit()
 
+curseur.execute("DROP TABLE IF EXISTS lumiere")
 curseur.execute(""" CREATE TABLE IF NOT EXISTS lumiere(
                     date TEXT NOT NULL PRIMARY KEY,
                     cloud INTEGER,
@@ -50,7 +50,7 @@ curseur.execute(""" CREATE TABLE IF NOT EXISTS lumiere(
 
 # connexion.commit()
 
-
+curseur.execute("DROP TABLE IF EXISTS objets_trouves")
 curseur.execute("""
                 CREATE TABLE IF NOT EXISTS objets_trouves(
                     id INTEGER PRIMARY KEY AUTOINCREMENT,

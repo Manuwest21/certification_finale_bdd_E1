@@ -11,7 +11,7 @@ for i in gare:
                                                              #  /api/records/1.0/search/?dataset=frequentation-gares&q=paris+gare+de+lyon&sort=nom_gare&facet=nom_gare&refine.nom_gare=Paris+Gare+de+Lyon 
     response = requests.get(f"https://ressources.data.sncf.com/api/records/1.0/search/?dataset=frequentation-gares&q={i}&sort=nom_gare&facet=nom_gare&refine.nom_gare={i}")
     frequent=response.json()
-   
+    print(frequent)
     frequent=frequent['records'][0]['fields']
     print(frequent)
     
