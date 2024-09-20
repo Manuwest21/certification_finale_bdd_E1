@@ -1,9 +1,11 @@
 import pyodbc
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Depends
 from typing import List, Optional
 from pydantic import BaseModel, Field, validator
 from datetime import date
 from fastapi.routing import APIRouter
+from securite_vrai import has_access  # Assurez-vous que cette fonction est définie correctement
+
 
 # Connexion à la base de données Azure SQL
 def get_db_connection():
@@ -62,7 +64,7 @@ class LumiereWithPoidsResponse(BaseModel):
 class ObjetsTrouvesCountResponse(BaseModel):
     total_count: int
 
-@app.post("/objets_trouves/", response_model=ObjetsTrouvesResponse)
+@app.post("/objets_trouves/", response_model=ObjetsTrouvesResponse, dependencies=[Depends(has_access)])
 def create_objets_trouves(objets_trouves: ObjetsTrouvesCreate):
     connection = get_db_connection()
     cursor = connection.cursor()
@@ -76,7 +78,7 @@ def create_objets_trouves(objets_trouves: ObjetsTrouvesCreate):
     connection.close()
     return objets_trouves
 
-@app.get("/count_objets_trouves_gare/")
+@app.get("/count_objets_trouves_gare/", dependencies=[Depends(has_access)])
 def count_objets_trouves(
     start_date: date = Query(..., description="Date de début (Format: YYYY-MM-DD, entre 2021 et 2023)"),
     end_date: date = Query(..., description="Date de fin (Format: YYYY-MM-DD, entre 2021 et 2023)"),
@@ -110,7 +112,7 @@ def count_objets_trouves(
     else:
         raise HTTPException(status_code=404, detail="No data found for the given criteria")
 
-@app.delete("/objets_trouves/{id}", response_model=ObjetsTrouvesResponse)
+@app.delete("/objets_trouves/{id}", response_model=ObjetsTrouvesResponse, dependencies=[Depends(has_access)])
 def delete_objets_trouves(id: int):
     connection = get_db_connection()
     cursor = connection.cursor()
@@ -121,7 +123,7 @@ def delete_objets_trouves(id: int):
     connection.close()
     return {"id": id}
 
-@app.put("/frequentation/{gare}", response_model=FrequentationResponse)
+@app.put("/frequentation/{gare}", response_model=FrequentationResponse, dependencies=[Depends(has_access)])
 def update_frequentation(gare: str, frequentation: FrequentationCreate, year: int):
     connection = get_db_connection()
     cursor = connection.cursor()
@@ -170,9 +172,7 @@ def update_frequentation(gare: str, frequentation: FrequentationCreate, year: in
     else:
         raise HTTPException(status_code=404, detail="Frequentation data not found")
 
-
-
-@app.post("/cloud_sun/", response_model=LumiereWithPoidsResponse)
+@app.post("/cloud_sun/", response_model=LumiereWithPoidsResponse, dependencies=[Depends(has_access)])
 def calculate_poids_pondere(lumiere: LumiereWithPoidsCreate):
     connection = get_db_connection()
     cursor = connection.cursor()
