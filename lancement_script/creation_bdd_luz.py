@@ -30,6 +30,7 @@ curseur.execute("""
                     type TEXT ,
                     gare TEXT ,
                     FOREIGN KEY (date) REFERENCES lumiere(date)  
+                    FOREIGN KEY (gare) REFERENCES frequentation(gare)  
                 )
                 """)
 

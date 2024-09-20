@@ -1,6 +1,14 @@
 import sqlite3
+import os
 
-connexion = sqlite3.connect("bdd_objets_luminosite.db")
+# Obtenir le répertoire du script
+repertoire_script = os.path.dirname(os.path.abspath(__file__))
+
+# Construire le chemin complet pour la base de données
+chemin_bdd = os.path.join(repertoire_script, "bdd_objets_luminosite.db")
+
+# Créer une connexion à la base de données (elle sera créée dans le répertoire du script)
+connexion = sqlite3.connect(chemin_bdd)
 curseur = connexion.cursor()
 
 # Supprimer les tables existantes si elles existent

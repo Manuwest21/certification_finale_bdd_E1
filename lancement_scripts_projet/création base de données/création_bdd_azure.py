@@ -13,9 +13,9 @@ cursor_azure = conn_azure.cursor()
 conn_azure = pyodbc.connect(conn_str)
 cursor_azure = conn_azure.cursor()
 
-
+cursor_azure.execute("DROP TABLE IF EXISTS frequentation")
 cursor_azure.execute(""" 
-    CREATE TABLE lumieri11(
+    CREATE TABLE lumiere9(
         date DATE PRIMARY KEY,
         cloud VARCHAR(255) NOT NULL,
         sun VARCHAR(255) NOT NULL
@@ -24,17 +24,18 @@ cursor_azure.execute("""
 
 
 cursor_azure.execute(""" 
-    CREATE TABLE objets_trouvis11(
+    CREATE TABLE objets_trouves9(
         id INT PRIMARY KEY IDENTITY(1,1),
         date DATE,
         type VARCHAR(255) NOT NULL,
-        gare VARCHAR(255) NOT NULL
+        gare VARCHAR(255) NOT NULL,
+        poids_pondere FLOAT
     )
 """)
 
 
 cursor_azure.execute(""" 
-    CREATE TABLE frequentati11(
+    CREATE TABLE frequentation9(
         id INT PRIMARY KEY IDENTITY(1,1),
         gare TEXT ,
         frequent_2021 VARCHAR(255) NOT NULL,
