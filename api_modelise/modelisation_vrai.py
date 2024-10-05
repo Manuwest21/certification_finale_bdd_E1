@@ -110,7 +110,7 @@ def count_objets_trouves(
     if result:
         return {"total_count": result[0]}
     else:
-        raise HTTPException(status_code=404, detail="No data found for the given criteria")
+        raise HTTPException(status_code=404, detail="pas de données correspondant aux critères")
 
 @app.delete("/objets_trouves/{id}", response_model=ObjetsTrouvesResponse, dependencies=[Depends(has_access)])
 def delete_objets_trouves(id: int):
