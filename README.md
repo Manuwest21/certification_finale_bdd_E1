@@ -1,4 +1,4 @@
-Projet SNCF : Analyse des Objets Perdus et de la Luminosité
+Projet SNCF : analyse des objets perdus et de la luminosité
 1. Présentation Générale
 Introduction du Projet
 
