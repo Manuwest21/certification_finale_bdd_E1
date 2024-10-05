@@ -5,7 +5,7 @@ import sqlite3
 repertoire_actuel = os.getcwd()
 
 # Définir le chemin pour la base de données (dans le répertoire actuel)
-chemin_bdd = os.path.join(repertoire_actuel, 'bdd_pondere.db')
+chemin_bdd = os.path.join(repertoire_actuel, 'bdd_pondere15.db')
 
 # Connexion à la base de données SQLite
 connexion = sqlite3.connect(chemin_bdd)
@@ -40,7 +40,7 @@ curseur.execute("""
 curseur.execute("""
     CREATE TABLE objets_trouves(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        date TEXT NOT NULL,
+        date DATE NOT NULL,
         type TEXT,
         nom_gare TEXT NOT NULL,
         poids_pondere FLOAT, 

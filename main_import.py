@@ -3,8 +3,11 @@ import subprocess  # Permet de lancer des sous-processus, comme l'exécution de 
 
 def run_script(script_name):
     """Exécute un script Python via subprocess."""
-    # Construit le chemin complet du script à partir du nom du script et du répertoire de travail actuel.
-    script_path = os.path.join(os.getcwd(), script_name)
+    # Définit le chemin du répertoire contenant les scripts à lancer.
+    scripts_directory = os.path.join(os.getcwd(), 'lancement_scripts_projet', 'importation_données')
+    
+    # Construit le chemin complet du script à partir du répertoire des scripts et du nom du script.
+    script_path = os.path.join(scripts_directory, script_name)
     
     try:
         # Exécute le script Python en tant que sous-processus.
@@ -26,8 +29,7 @@ def run_script(script_name):
 # et non pas s'il est importé en tant que module dans un autre script.
 if __name__ == "__main__":
     # Liste des noms de fichiers de scripts Python à exécuter.
-    scripts = ['creation_bdd_lumiere.py','frequentation_api.py', 'objets_trouves_api.py', 'concat.py']
-    
+    scripts = ['frequentation_api.py', 'objets_trouves_api.py', 'concat.py']
     # Boucle à travers chaque script dans la liste.
     for script in scripts:
         # Appelle la fonction run_script pour exécuter chaque script.

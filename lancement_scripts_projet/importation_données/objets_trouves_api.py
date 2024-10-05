@@ -41,11 +41,11 @@ for gare in gares_parisiennes:
             # Ajouter les données au DataFrame
                 df = df._append({'date': date, 'type': type, 'gare': gare}, ignore_index=True)
         # Insertion dans la base de données
-            curseur.execute("""
-                    INSERT INTO objets_trouves (date, type, nom_gare)
-                    VALUES (?, ?, ?)
-                """, (date, type_, gare_))
-            connexion.commit()
+            # curseur.execute("""
+            #         INSERT INTO objets_trouves (date, type, nom_gare)
+            #         VALUES (?, ?, ?)
+            #     """, (date, type_, gare_))
+            # connexion.commit()
         else:
             print(f"Erreur {response.status_code} pour la requête : {url}")
 
@@ -54,4 +54,5 @@ connexion.close()
 
 # Affichage des premières lignes du DataFrame
 print(df.head())
-df.to_csv('../../csv_modélisé/objets_trouves.csv', index=False)
+# df.to_csv('../../csv_modélisé/objets_trouves.csv', index=False)
+df.to_csv('csv_modélisé/objets_trouves.csv', index=False)

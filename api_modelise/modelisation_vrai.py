@@ -69,7 +69,7 @@ def create_objets_trouves(objets_trouves: ObjetsTrouvesCreate):
     connection = get_db_connection()
     cursor = connection.cursor()
     query = """
-        INSERT INTO objets_trouves9 (date, type, gare)
+        INSERT INTO objets_trouves (date, type, gare)
         VALUES (?, ?, ?)
     """
     cursor.execute(query, objets_trouves.date, objets_trouves.type, objets_trouves.gare)
@@ -98,7 +98,7 @@ def count_objets_trouves(
     else:
         query = """
             SELECT COUNT(*)
-            FROM objets_trouves9
+            FROM objets_trouves
             WHERE date BETWEEN ? AND ?
         """
         cursor.execute(query, (start_date, end_date))
@@ -116,7 +116,7 @@ def count_objets_trouves(
 def delete_objets_trouves(id: int):
     connection = get_db_connection()
     cursor = connection.cursor()
-    query = "DELETE FROM objets_trouves9 WHERE id = ?"
+    query = "DELETE FROM objets_trouves WHERE id = ?"
     cursor.execute(query, id)
     connection.commit()
     cursor.close()
@@ -129,7 +129,7 @@ def update_frequentation(gare: str, frequentation: FrequentationCreate, year: in
     cursor = connection.cursor()
     
     # Vérifier si la gare existe avant de la mettre à jour
-    cursor.execute("SELECT gare FROM frequentation9 WHERE gare = ?", (gare,))
+    cursor.execute("SELECT gare FROM frequentation WHERE gare = ?", (gare,))
     row = cursor.fetchone()
     
     if not row:
@@ -179,8 +179,8 @@ def calculate_poids_pondere(lumiere: LumiereWithPoidsCreate):
     
     query = """
         SELECT AVG(o.poids_pondere) AS somme_poids_pondere
-        FROM objets_trouves9 o
-        INNER JOIN lumiere9 l ON o.date = l.date
+        FROM objets_trouves o
+        INNER JOIN lumiere l ON o.date = l.date
         WHERE l.cloud < ? AND l.sun > ? AND o.date BETWEEN ? AND ?
     """
     

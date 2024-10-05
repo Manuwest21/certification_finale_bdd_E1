@@ -6,7 +6,7 @@ import pyodbc
 repertoire_actuel = os.getcwd()
 
 # Construire le chemin vers la base de données dans le répertoire parent et 'nettoyage_des_donnees'
-chemin_bdd = os.path.join(repertoire_actuel, '../nettoyage_des_donnees/bdd_pondere.db')
+chemin_bdd = os.path.join(repertoire_actuel, '../nettoyage_des_donnees/bdd_pondere14.db')
 
 # Résoudre le chemin absolu au cas où il y aurait des liens symboliques ou des chemins relatifs
 chemin_bdd = os.path.abspath(chemin_bdd)
@@ -45,16 +45,16 @@ objets_data = cursor_sqlite.fetchall()
 
 # Insérer les données dans la table 'lumiere9' d'Azure
 for row in lumiere_data:
-    cursor_azure.execute("INSERT INTO lumiere9 (date, cloud, sun) VALUES (?, ?, ?)", row[:3])
+    cursor_azure.execute("INSERT INTO lumiere (date, cloud, sun) VALUES (?, ?, ?)", row[:3])
 print("import luz ok")
 # Insérer les données dans la table 'frequentation9' d'Azure
 for row in frequentation_data:
-    cursor_azure.execute("INSERT INTO frequentation9 (gare, frequent_2021, frequent_2022, frequent_2023) VALUES (?, ?, ?, ?)", row[:4])
+    cursor_azure.execute("INSERT INTO frequentation (gare, frequent_2021, frequent_2022, frequent_2023) VALUES (?, ?, ?, ?)", row[:4])
 print("import frequentation ok")
 # Insérer les données dans la table 'objets_trouves9' d'Azure
 n=1
 for row in objets_data:
-    cursor_azure.execute("INSERT INTO objets_trouves9 (date, type, gare, poids_pondere) VALUES (?, ?, ?, ?)", row[0:4])
+    cursor_azure.execute("INSERT INTO objets_trouves (date, type, gare, poids_pondere) VALUES (?, ?, ?, ?)", row[1:5])
     print(n)
     n=n+1
 # Commit les transactions sur Azure
