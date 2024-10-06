@@ -53,13 +53,13 @@ class FrequentationResponse(BaseModel):
     frequent_2023: int
 
 class LumiereWithPoidsCreate(BaseModel):
-    start_date: date
-    end_date: date
-    cloud: int
-    sun: int
+    cloud: float = Field(..., description="Seuil de couverture nuageuse (0-100).")
+    sun: float = Field(..., description="Heures d'ensoleillement par jour.")
+    start_date: date = Field(..., description="Date de début de l'analyse (YYYY-MM-DD).", example="2023-01-01")
+    end_date: date = Field(..., description="Date de fin de l'analyse (YYYY-MM-DD).", example="2023-12-31")
 
 class LumiereWithPoidsResponse(BaseModel):
-    somme_poids_pondere: float
+    somme_poids_pondere: Optional[float] = None
 
 class ObjetsTrouvesCountResponse(BaseModel):
     total_count: int
@@ -171,26 +171,77 @@ def update_frequentation(gare: str, frequentation: FrequentationCreate, year: in
         )
     else:
         raise HTTPException(status_code=404, detail="Frequentation data not found")
+    
+    
+
+# @app.post("/cloud_sun/", response_model=LumiereWithPoidsResponse, dependencies=[Depends(has_access)])
+# def calculate_poids_pondere(lumiere: LumiereWithPoidsCreate):
+#     """
+#     Cet endpoint permet de calculer la somme pondérée des poids des objets trouvés, 
+#     en fonction de la couverture nuageuse et des heures d'ensoleillement pendant une période donnée.
+    
+#     L'utilisateur doit fournir :
+#     - Le seuil de couverture nuageuse (cloud) [entre 0 et 100].
+#     - Les heures d'ensoleillement (sun) [heures de soleil par jour].
+#     - Une plage de dates (start_date, end_date) pour laquelle l'analyse doit être effectuée (de 2021-01-01 à 2023-12-31)
+#     """
+#     connection = get_db_connection()
+#     cursor = connection.cursor()
+
+#     query = """
+#         SELECT AVG(o.poids_pondere) AS somme_poids_pondere
+#         FROM objets_trouves o
+#         INNER JOIN lumiere l ON o.date = l.date
+#         WHERE l.cloud < ? AND l.sun > ? AND o.date BETWEEN ? AND ?
+#     """
+    
+    
+#     cursor.execute(query, (lumiere.cloud, lumiere.sun, lumiere.start_date, lumiere.end_date))              # Exécution de la requête avec les valeurs de l'objet 'lumiere'
+#     result = cursor.fetchone()
+
+    
+#     cursor.close()                                                                                         # Fermeture du curseur et de la connexion
+#     connection.close()
+
+   
+#     if result:
+#         return LumiereWithPoidsResponse(somme_poids_pondere=result[0])                                     # Vérification du résultat et retour de la réponse
+#     else:
+#         raise HTTPException(status_code=404, detail="Aucune donnée trouvée correspondant aux critères.")
 
 @app.post("/cloud_sun/", response_model=LumiereWithPoidsResponse, dependencies=[Depends(has_access)])
-def calculate_poids_pondere(lumiere: LumiereWithPoidsCreate):
+def calculate_poids_pondere(
+    cloud: float = Query(..., description="Seuil de couverture nuageuse minimale (0-100)"),
+    sun: float = Query(..., description="Heures d'ensoleillement minimum par jour(1-15)"),
+    start_date: date = Query(..., description="Date de début de l'analyse (YYYY-MM-DD)", example="2021-01-01"),
+    end_date: date = Query(..., description="Date de fin de l'analyse (YYYY-MM-DD)", example="2023-12-31"),
+):
+    """
+    Cet endpoint permet de calculer la somme pondérée des poids des objets trouvés,
+    en fonction de la couverture nuageuse et des heures d'ensoleillement pendant une période donnée.
+
+    L'utilisateur doit fournir :
+    - Le seuil de couverture nuageuse (cloud) [entre 0 et 100].
+    - Les heures d'ensoleillement (sun) [heures de soleil par jour].
+    - Une plage de dates (start_date, end_date) pour laquelle l'analyse doit être effectuée.
+    """
     connection = get_db_connection()
     cursor = connection.cursor()
-    
+
     query = """
         SELECT AVG(o.poids_pondere) AS somme_poids_pondere
         FROM objets_trouves o
         INNER JOIN lumiere l ON o.date = l.date
-        WHERE l.cloud < ? AND l.sun > ? AND o.date BETWEEN ? AND ?
+        WHERE l.cloud > ? AND l.sun > ? AND o.date BETWEEN ? AND ?
     """
     
-    cursor.execute(query, (lumiere.cloud, lumiere.sun, lumiere.start_date, lumiere.end_date))
+    cursor.execute(query, (cloud, sun, start_date, end_date))  # Exécution de la requête
     result = cursor.fetchone()
-    
-    cursor.close()
+
+    cursor.close()  # Fermeture du curseur et de la connexion
     connection.close()
-    
+
     if result:
-        return LumiereWithPoidsResponse(somme_poids_pondere=result[0])
+        return LumiereWithPoidsResponse(somme_poids_pondere=result[0])  # Vérification du résultat et retour de la réponse
     else:
-        raise HTTPException(status_code=404, detail="No data found matching criteria")
+        raise HTTPException(status_code=404, detail="Aucune donnée trouvée correspondant aux critères.")
