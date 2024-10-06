@@ -52,7 +52,7 @@ output_dir = os.getcwd()
 
 # Construire le chemin complet pour le fichier CSV de sortie
 # output_file = os.path.join(output_dir, '../../csv_modélisé/all_meteo.csv')
-output_file = os.path.join(output_dir, 'csv_modélisé/all_meteo.csv')
+output_file = os.path.join(output_dir, 'csv_modélisé/all_meteo1.csv')
 # Écrire la DataFrame résultante dans le fichier CSV
 result.to_csv(output_file, index=False)
 

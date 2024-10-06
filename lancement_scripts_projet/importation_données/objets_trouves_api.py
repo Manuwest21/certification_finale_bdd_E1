@@ -55,4 +55,4 @@ connexion.close()
 # Affichage des premières lignes du DataFrame
 print(df.head())
 # df.to_csv('../../csv_modélisé/objets_trouves.csv', index=False)
-df.to_csv('csv_modélisé/objets_trouves.csv', index=False)
+df.to_csv('csv_modélisé/objets_trouves1.csv', index=False)
